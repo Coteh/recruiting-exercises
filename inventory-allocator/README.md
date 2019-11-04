@@ -1,4 +1,10 @@
+## Deliverr Recruiting Exercise - Inventory Allocator
 
+Implementation by James Cote
+
+### Instructions
+
+Run `npm test` to run the tests for the `InventoryAllocator` class.
 
 ### Problem
 
