@@ -20,7 +20,7 @@ export class InventoryAllocator {
 
     createCheapestShipments(): AllocatedShipment[] {
         let result: AllocatedShipment[] = [];
-        if (Object.keys(this.ordersMap).length == 0) {
+        if (!this.ordersMap || !this.warehousesArr || Object.keys(this.ordersMap).length == 0) {
             return result;
         }
         this.warehousesArr.forEach(warehouse => {
@@ -33,7 +33,8 @@ export class InventoryAllocator {
                 let warehouseCount: number = warehouseInventory[name];
                 let orderCount: number = this.ordersMap[name];
                 let itemDiff: number = orderCount - warehouseCount;
-                if (orderCount == 0) {
+                // If number of items ordered is 0 (or undefined)
+                if (!orderCount) {
                     return;
                 }
                 if (itemDiff >= 0) {

@@ -26,12 +26,13 @@ describe("Test", () => {
         expect(allocatedShipments.length).to.be.greaterThan(0);
     });
     it("should return an exact allocated shipment for an exact inventory match", () => {
-        var itemMap: ItemMap = { apple: 1 };
+        var itemMap: ItemMap = { apple: 1, banana: 5 };
         var warehouses: Warehouse[] = [
             {
                 name: "owd",
                 inventory: {
-                    apple: 1
+                    apple: 1,
+                    banana: 5
                 }
             }
         ];
@@ -39,7 +40,8 @@ describe("Test", () => {
         var allocatedShipments: AllocatedShipment[] = inventoryAllocator.createCheapestShipments();
         expect(allocatedShipments.length).to.be.equal(1);
         expect(allocatedShipments[0]["owd"]).to.deep.equal({
-            apple: 1
+            apple: 1,
+            banana: 5
         });
     });
     it("should split an item order across warehouses if that is the only way to completely ship the order", () => {
@@ -82,6 +84,20 @@ describe("Test", () => {
         var allocatedShipments: AllocatedShipment[] = inventoryAllocator.createCheapestShipments();
         expect(allocatedShipments.length).to.be.equal(0);
     });
+    it("should return no allocated shipments if no warehouses contain the items ordered", () => {
+        var itemMap: ItemMap = { apple: 1 };
+        var warehouses: Warehouse[] = [
+            {
+                name: "owd",
+                inventory: {
+                    banana: 1
+                }
+            }
+        ];
+        var inventoryAllocator: InventoryAllocator = new InventoryAllocator(itemMap, warehouses);
+        var allocatedShipments: AllocatedShipment[] = inventoryAllocator.createCheapestShipments();
+        expect(allocatedShipments.length).to.be.equal(0);
+    });
     it("should return no allocated shipments if no items were passed in", () => {
         var warehouses: Warehouse[] = [
             {
@@ -96,9 +112,29 @@ describe("Test", () => {
         var allocatedShipments: AllocatedShipment[] = inventoryAllocator.createCheapestShipments();
         expect(allocatedShipments.length).to.be.equal(0);
     });
-    it("should return no allocated shipments if no warehouse were passed in", () => {
+    it("should return no allocated shipments if the items map passed in is undefined", () => {
+        var warehouses: Warehouse[] = [
+            {
+                name: "owd",
+                inventory: {
+                    apple: 5,
+                    orange: 10
+                }
+            }
+        ];
+        var inventoryAllocator: InventoryAllocator = new InventoryAllocator(undefined, warehouses);
+        var allocatedShipments: AllocatedShipment[] = inventoryAllocator.createCheapestShipments();
+        expect(allocatedShipments.length).to.be.equal(0);
+    });
+    it("should return no allocated shipments if no warehouses were passed in", () => {
         var itemMap: ItemMap = { apple: 5 };
         var inventoryAllocator: InventoryAllocator = new InventoryAllocator(itemMap, []);
+        var allocatedShipments: AllocatedShipment[] = inventoryAllocator.createCheapestShipments();
+        expect(allocatedShipments.length).to.be.equal(0);
+    });
+    it("should return no allocated shipments if warehouses array passed in is undefined", () => {
+        var itemMap: ItemMap = { apple: 5 };
+        var inventoryAllocator: InventoryAllocator = new InventoryAllocator(itemMap, undefined);
         var allocatedShipments: AllocatedShipment[] = inventoryAllocator.createCheapestShipments();
         expect(allocatedShipments.length).to.be.equal(0);
     });
