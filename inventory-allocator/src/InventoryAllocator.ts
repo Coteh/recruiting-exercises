@@ -1,23 +1,33 @@
-export type ItemMap = {
-    [itemName: string]: number
-}
-export type Warehouse = {
-    name: string,
-    inventory: ItemMap
-}
-export type AllocatedShipment = {
-    [warehouseName: string]: ItemMap
-}
+/**
+ * Deliverr Recruiting Challenge - Inventory Allocator
+ * By: James Cote
+ */
 
+import { ItemMap, Warehouse, AllocatedShipment } from "./InventoryTypes";
+
+/**
+ * Takes an inventory of items and a list of warehouses,
+ * and generates an allocated list of warehouses.
+ */
 export class InventoryAllocator {
     private ordersMap: ItemMap;
     private warehousesArr: Warehouse[];
 
+    /**
+     * Constructs an instance of {@link InventoryAllocator}
+     * @param ordersMap an inventory of items ordered
+     * @param warehousesArr a list of warehouses
+     */
     constructor(ordersMap: ItemMap, warehousesArr: Warehouse[]) {
         this.ordersMap = ordersMap;
         this.warehousesArr = warehousesArr;
     }
 
+    /**
+     * Generates a list of allocated shipments given the
+     * inventory and warehouses this class was instantiated with
+     * @returns array of {@link AllocatedShipment} instances containing item quantities to be shipped
+     */
     createCheapestShipments(): AllocatedShipment[] {
         let result: AllocatedShipment[] = [];
         if (!this.ordersMap || !this.warehousesArr || Object.keys(this.ordersMap).length == 0) {

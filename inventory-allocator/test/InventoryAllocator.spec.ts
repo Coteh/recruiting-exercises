@@ -1,4 +1,10 @@
-import { InventoryAllocator, AllocatedShipment, ItemMap, Warehouse } from "../src/InventoryAllocator";
+/**
+ * Deliverr Recruiting Challenge - Inventory Allocator
+ * By: James Cote
+ */
+
+import { InventoryAllocator } from "../src/InventoryAllocator";
+import { AllocatedShipment, ItemMap, Warehouse } from "../src/InventoryTypes";
 import { expect } from "chai";
 import "mocha";
 
